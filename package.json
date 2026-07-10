@@ -1,0 +1,29 @@
+{
+  "name": "multi-tenant-user-management",
+  "version": "1.0.0",
+  "main": "./src/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./src/app.js",
+    "dev": "nodemon ./src/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Soban-Abbas/Multi-Tenant-User-Management-System.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Soban-Abbas/Multi-Tenant-User-Management-System/issues"
+  },
+  "homepage": "https://github.com/Soban-Abbas/Multi-Tenant-User-Management-System#readme",
+  "description": "",
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "pg": "^8.22.0"
+  }
+}
