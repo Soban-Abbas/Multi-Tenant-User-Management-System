@@ -1,7 +1,6 @@
-const express=require("express");
-const app=express()
+
 const { createTables }=require("../database/tablesCreation")
-exports.startServer=async()=>{
+exports.startServer=async(app)=>{
 try {
     await createTables();
     app.listen(3000,()=>{
