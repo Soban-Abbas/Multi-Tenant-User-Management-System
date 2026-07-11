@@ -1,8 +1,10 @@
 const {pool}=require("../database/pool")
+const crypto=require("crypto");
 exports.regNewCompany=async(name,email,password)=>{
     try {
-        const regNewCompany=pool.query(`insert into companies (name , email , password , total_employees)
-            values ($1,$2,$3,$4) returning *`,[name,email,password,0])
+           const company_code = crypto.randomBytes(4).toString('hex');
+        const regNewCompany=pool.query(`insert into companies (name , email , password , total_employees, company_code )
+            values ($1,$2,$3,$4,$5) returning *`,[name,email,password,0,company_code])
             return regNewCompany
     } catch (error) {
         next(error)
@@ -17,6 +19,7 @@ exports.findCompanyByEmail=async(email)=>{
             throw new Error("wrong Email or password")
         }
     } catch (error) {
+        error.status=401
         throw error
     }
 }

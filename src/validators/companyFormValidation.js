@@ -16,7 +16,7 @@ exports.companyFormValidation=[
         try {
             const companyExist=await pool.query('select * from companies where email=$1',[value]);
             if(companyExist.rowCount>0){
-                throw new Error("company already regusterd")
+                throw new Error("company already registered with this email")
             }else{
                 return true
             }

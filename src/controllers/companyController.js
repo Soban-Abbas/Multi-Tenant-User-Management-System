@@ -1,6 +1,7 @@
 const {validationResult}=require("express-validator")
-const companyModel=require("../models/companyModel")
 const bcrypt=require("bcrypt");
+const companyModel=require("../models/companyModel")
+const crypto=require("crypto")
 exports.registerCompany=async(req , res , next)=>{
     try{
 const errors=validationResult(req);
@@ -17,13 +18,18 @@ if(regNewCompany.rows.length>0){
         id: regNewCompany.rows[0].id,
         name:regNewCompany.rows[0].name,
         email:regNewCompany.rows[0].email,
-        Total_employees_registered:regNewCompany.rows[0].total_employees
+        total_employees_registered:regNewCompany.rows[0].total_employees,
+        company_code:regNewCompany.rows[0].company_code
     }
 
-    res.status(201).json({
+  return  res.status(201).json({
         message:"New Company added Successfully",
         companyDetails:companyDetails
     })
+}else{
+return res.status(400).json({
+    error:"Registration Failed! "
+})
 }
 
 
