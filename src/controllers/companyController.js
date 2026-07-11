@@ -34,5 +34,31 @@ if(regNewCompany.rows.length>0){
 }
 
 exports.loginCompany=async(req,res,next)=>{
-    
+    try{
+    const {email,password}=req.body;
+    if(!email || !password || !email.includes("@")){
+        return res.status(401).json({
+            error:"Wrong email or password"
+        })
+    }
+    const companyExist = await companyModel.findCompanyByEmail(email)
+   const correctPassword=await bcrypt.compare(password,companyExist.password)
+   if(!correctPassword){
+    return res.status(401).json({
+        error:"Wrong Email or password"
+    })
+   }
+   res.status(200).json({
+    message:"Company Login Successfull",
+    companyData:{
+        id:companyExist.id,
+        name:companyExist.name,
+        email:companyExist.email,
+        Total_employees_registered:companyExist.Total_employees_registered
+    }
+   })
+
+}catch(error){
+throw error
+}
 }

@@ -8,3 +8,15 @@ exports.regNewCompany=async(name,email,password)=>{
         next(error)
     }
 }
+exports.findCompanyByEmail=async(email)=>{
+    try {
+        const companyExist=await pool.query('select * from companies where email=$1 ',[email])
+        if(companyExist.rowCount>0){
+            return companyExist.rows[0]
+        }else{
+            throw new Error("wrong Email or password")
+        }
+    } catch (error) {
+        throw error
+    }
+}
