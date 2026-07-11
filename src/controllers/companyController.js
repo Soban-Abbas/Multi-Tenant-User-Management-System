@@ -32,3 +32,7 @@ if(regNewCompany.rows.length>0){
         next(error)
     }
 }
+
+exports.loginCompany=async(req,res,next)=>{
+    
+}
