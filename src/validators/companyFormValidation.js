@@ -4,7 +4,7 @@ exports.companyFormValidation=[
     check('name')
     .trim()
     .notEmpty()
-    .isLength({max:10})
+    .isLength({max:15})
     .withMessage("company name should be less then 15 letters"),
     check("email")
     .trim()

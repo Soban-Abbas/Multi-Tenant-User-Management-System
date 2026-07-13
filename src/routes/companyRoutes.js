@@ -4,7 +4,8 @@ const router=express.Router();
 const companyController=require("../controllers/companyController")
 const { companyFormValidation }=require("../validators/companyFormValidation")
 const { validateEmaiandPassword }=require("../validators/companyLoginValidation")
+const { IsCompany }=require("../helpers/isCompany")
 router.post('/register', companyFormValidation,companyController.registerCompany)
 router.post('/login',validateEmaiandPassword,companyController.loginCompany)
-router.get('/employees',verifyToken,companyController.getEmployees)
+router.get('/employees',verifyToken,IsCompany,companyController.getEmployees)
 module.exports=router

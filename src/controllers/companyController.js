@@ -73,6 +73,6 @@ exports.loginCompany = async (req, res, next) => {
 }
 
 exports.getEmployees=async(req,res, next)=>{
-    
+    console.log("employees")
 }
 
