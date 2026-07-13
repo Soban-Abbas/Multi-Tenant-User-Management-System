@@ -8,8 +8,8 @@ exports.registerEmployee = async (req, res, next) => {
                 error: error.array()
             })
         }
-        const { name, email, password, company_code } = req.body
-        const registeredEmployee = await EmployeeModel.regNewEmployee(name, email, password, company_code)
+        const { name, email, password, company_code , role} = req.body
+        const registeredEmployee = await EmployeeModel.regNewEmployee(name, email, password, company_code, role)
         res.status(201).json({
             ...registeredEmployee
         })

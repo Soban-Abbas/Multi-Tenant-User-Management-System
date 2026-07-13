@@ -23,3 +23,12 @@ exports.findCompanyByEmail=async(email)=>{
         throw error
     }
 }
+
+exports.increaseEmployeeCountByOne=async(id)=>{
+try {
+    await pool.query(`update companies 
+        set total_employees = total_employees +1 where id = $1`,[id])
+} catch (error) {
+    throw error
+}
+}

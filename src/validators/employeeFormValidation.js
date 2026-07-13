@@ -33,6 +33,13 @@ check("confirmPassword")
 check('company_code')
 .trim()
 .notEmpty()
-.withMessage("company code cannot be empty")
+.withMessage("company code cannot be empty"),
+check('role')
+.trim()
+.notEmpty()
+.withMessage("Please enter role also")
+.bail()
+.isIn(['manager' , 'Employee'])
+.withMessage("Invalid Role")
 
 ]
