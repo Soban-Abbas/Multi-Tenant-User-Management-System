@@ -7,7 +7,7 @@ exports.regNewCompany=async(name,email,password)=>{
             values ($1,$2,$3,$4,$5) returning *`,[name,email,password,0,company_code])
             return regNewCompany
     } catch (error) {
-        next(error)
+        throw(error)
     }
 }
 exports.findCompanyByEmail=async(email)=>{
