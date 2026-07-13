@@ -53,7 +53,7 @@ exports.loginCompany = async (req, res, next) => {
             })
         }
 
-        const token = generateToken(companyExist.id, companyExist.email)
+        const token = generateToken(companyExist.id, companyExist.email,"company")
         const { id, name, email: company_email, company_code, Total_employees_registered } = companyExist
         res.status(200).json({
             message: "Company Login Successfull",
@@ -72,5 +72,7 @@ exports.loginCompany = async (req, res, next) => {
     }
 }
 
-
+exports.getEmployees=async(req,res, next)=>{
+    
+}
 

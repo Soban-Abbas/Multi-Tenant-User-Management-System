@@ -1,9 +1,10 @@
 const jwt=require("jsonwebtoken");
 
-exports.generateToken=(id , email )=>{
+exports.generateToken=(id , email, role )=>{
     const payload={
         id:id,
-        email:email
+        email:email,
+        role:role
     }
     const secretKey=process.env.jwtKey
     const expiry={

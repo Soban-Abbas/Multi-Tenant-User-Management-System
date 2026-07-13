@@ -1,9 +1,10 @@
 const express =require("express");
+const { verifyToken }=require("../util/verifyToken")
 const router=express.Router();
 const companyController=require("../controllers/companyController")
 const { companyFormValidation }=require("../validators/companyFormValidation")
 const { validateEmaiandPassword }=require("../validators/companyLoginValidation")
 router.post('/register', companyFormValidation,companyController.registerCompany)
 router.post('/login',validateEmaiandPassword,companyController.loginCompany)
-
+router.get('/employees',verifyToken,companyController.getEmployees)
 module.exports=router
