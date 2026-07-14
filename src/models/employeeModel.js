@@ -125,3 +125,22 @@ return {
         throw error
     }
 }
+
+
+exports.verifyEmailAndPassword=async(email,password)=>{
+try {
+    const employee=await this.getEmployeeByEmail(email);
+    const correctPassword=await bcrypt.compare(password,employee.password);
+    if(!correctPassword){
+        const error=new Error("Wrong email or password")
+        error.status=401
+        throw error
+    }
+    return {
+        message :"Login cradentials are correct",
+        ...employee
+    }
+} catch (error) {
+    throw error
+}
+}

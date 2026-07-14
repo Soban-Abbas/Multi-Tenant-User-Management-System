@@ -75,4 +75,18 @@ exports.loginCompany = async (req, res, next) => {
 exports.getEmployees=async(req,res, next)=>{
     console.log("employees")
 }
+exports.recoverEmployeeAccount=async(req,res, next)=>{
+    try {
+        const { email, password } = req.body;
+        const { id: company_id } = req.details
+        const activateAccount = await companyModel.recoverEmployeeAccount(company_id, email, password)
+        res.status(200).json({
+            message:"Employee Account Activated Successfully",
+            ...activateAccount
+        })
+    } catch (error) {
+        next(error)
+    }
+   
 
+}
