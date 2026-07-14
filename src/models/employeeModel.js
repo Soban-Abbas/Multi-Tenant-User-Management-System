@@ -91,3 +91,31 @@ token
     }
 }
 
+
+exports.softDelete=async(email,password)=>{
+    try {
+        const employee= await this.getEmployeeByEmail(email);
+        if(employee.is_active===false){
+            const error=new Error("User not Found ");
+            error.status=404
+            throw error;
+
+        }
+        const correctPassword= await bcrypt.compare(password,employee.password)
+        if(!correctPassword){
+            const error = new Error("Wrong Email or password")
+            error.status = 401;
+            throw error
+            return
+        }
+const updateEmployeeDetails=await pool.query("update employees set is_active = false where email=$1",[email]);
+
+return {
+    message:"Employee deleted Successfully"
+}
+
+
+    } catch (error) {
+        throw error
+    }
+}

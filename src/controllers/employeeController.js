@@ -30,3 +30,13 @@ exports.login=async(req , res , next)=>{
         next(error)
     }
 }
+exports.deleteEmployee=async(req,res,next)=>{
+    try {
+        const softDelete = await EmployeeModel.softDelete(req.body.email,req.body.password)
+        res.status(200).json({
+           ... softDelete
+        })
+    } catch (error) {
+        next(error)
+    }
+}

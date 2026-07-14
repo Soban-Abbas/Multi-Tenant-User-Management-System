@@ -39,7 +39,7 @@ check('role')
 .notEmpty()
 .withMessage("Please enter role also")
 .bail()
-.isIn(['manager' , 'Employee'])
+.isIn(['manager' , 'employee'])
 .withMessage("Invalid Role")
 
 ]
