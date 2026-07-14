@@ -72,6 +72,12 @@ exports.getEmployeeByEmail=async(email)=>{
 exports.checklogin=async(email,password)=>{
     try {
         const employee=await this.getEmployeeByEmail(email);
+        if(employee.is_active===false){
+            const error=new Error("To login your profile please contact youe company")
+            error.status=404;
+            throw error;
+            return
+        }
         const correctPassword=await bcrypt.compare(password,employee.password);
         if(!correctPassword){
             const error = new Error("Wrong Email or password");
