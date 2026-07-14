@@ -72,8 +72,27 @@ exports.loginCompany = async (req, res, next) => {
     }
 }
 
-exports.getEmployees=async(req,res, next)=>{
-    console.log("employees")
+exports.getEmployeesthrowSearch=async(req,res, next)=>{
+    try {
+        const name = req.query.name || "";
+    
+        const employees = await companyModel.getAllEmployeesthroughSearch(req.details.id,name)
+        
+           if(employees.rowCount>0){
+               
+           return res.status(200).json({
+        data:   employees.rows
+            })
+           }else{
+        return    res.status(404).json({
+                error:"No match found"
+            })
+           }
+    } catch (error) {
+        next(error)
+    }
+
+
 }
 exports.recoverEmployeeAccount=async(req,res, next)=>{
     try {

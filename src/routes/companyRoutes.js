@@ -8,6 +8,6 @@ const { IsCompany }=require("../helpers/isCompany");
 const { isCompanyEmployees } = require("../helpers/isCompanyEmployees");
 router.post('/register', companyFormValidation,companyController.registerCompany)
 router.post('/login',validateEmaiandPassword,companyController.loginCompany)
-router.get('/employees',verifyToken,IsCompany,companyController.getEmployees)
-router.post('/recoverAccount',verifyToken,IsCompany,validateEmaiandPassword,companyController.recoverEmployeeAccount)
+router.get('/employees', verifyToken, IsCompany, companyController.getEmployeesthrowSearch)
+router.put('/recoverAccount',verifyToken,IsCompany,validateEmaiandPassword,companyController.recoverEmployeeAccount)
 module.exports=router

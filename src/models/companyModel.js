@@ -2,6 +2,7 @@ const { emit } = require("cluster");
 const employeeModel = require("./employeeModel")
 const { pool } = require("../database/pool")
 const crypto = require("crypto");
+const { is_active } = require("../helpers/is_active");
 exports.regNewCompany = async (name, email, password) => {
     try {
         const company_code = crypto.randomBytes(4).toString('hex');
@@ -64,6 +65,15 @@ exports.recoverEmployeeAccount = async (company_id, email, password) => {
 
 
 
+    } catch (error) {
+        throw error
+    }
+}
+
+exports.getAllEmployeesthroughSearch=async(company_id,name)=>{
+    try {
+        const employees=await pool.query(`select id,name,email,role from employees where company_id=$1 AND name ilike '%'|| $2 || '%' `,[company_id,name])
+        return employees
     } catch (error) {
         throw error
     }

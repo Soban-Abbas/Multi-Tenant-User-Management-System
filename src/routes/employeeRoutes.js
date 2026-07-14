@@ -8,5 +8,5 @@ const { validateEmaiandPassword }=require("../validators/companyLoginValidation"
 const { is_active }=require("../helpers/is_active")
 router.post("/register", validateInput,employeeController.registerEmployee)
 router.post("/login", validateEmaiandPassword,employeeController.login)
-router.post('/delete', verifyToken, is_active,validateEmaiandPassword,isCompanyEmployees,employeeController.deleteEmployee)
+router.delete('/delete', verifyToken, is_active,validateEmaiandPassword,isCompanyEmployees,employeeController.deleteEmployee)
 module.exports=router
