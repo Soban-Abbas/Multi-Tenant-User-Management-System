@@ -53,7 +53,7 @@ exports.loginCompany = async (req, res, next) => {
             })
         }
 
-        const token = generateToken(companyExist.id, companyExist.email,"company")
+        const token = generateToken(companyExist.id, companyExist.email, "company")
         const { id, name, email: company_email, company_code, total_employees } = companyExist
         res.status(200).json({
             message: "Company Login Successfull",
@@ -72,40 +72,102 @@ exports.loginCompany = async (req, res, next) => {
     }
 }
 
-exports.getEmployeesthrowSearch=async(req,res, next)=>{
+exports.getEmployeesthrowSearch = async (req, res, next) => {
     try {
         const name = req.query.name || "";
-    
-        const employees = await companyModel.getAllEmployeesthroughSearch(req.details.id,name)
-        
-           if(employees.rowCount>0){
-               
-           return res.status(200).json({
-        data:   employees.rows
+
+        const employees = await companyModel.getAllEmployeesthroughSearch(req.details.id, name)
+
+        if (employees.rowCount > 0) {
+
+            return res.status(200).json({
+                data: employees.rows
             })
-           }else{
-        return    res.status(404).json({
-                error:"No match found"
+        } else {
+            return res.status(404).json({
+                error: "No match found"
             })
-           }
+        }
     } catch (error) {
         next(error)
     }
 
 
 }
-exports.recoverEmployeeAccount=async(req,res, next)=>{
+exports.recoverEmployeeAccount = async (req, res, next) => {
     try {
         const { email, password } = req.body;
         const { id: company_id } = req.details
         const activateAccount = await companyModel.recoverEmployeeAccount(company_id, email, password)
         res.status(200).json({
-            message:"Employee Account Activated Successfully",
+            message: "Employee Account Activated Successfully",
             ...activateAccount
         })
     } catch (error) {
         next(error)
     }
-   
 
+
+}
+
+exports.filterEmployees = async (req, res, next) => {
+
+    try {
+
+        const filter = req.query.active || true;
+        const employees = await companyModel.getAllEmployees(req.details.id)
+        if (employees.rowCount < 1) {
+            return res.status(404).json({
+                message: "No employees found"
+            })
+        }
+        if (filter === "true") {
+            const activeEmployees = employees.rows.filter((e) => {
+                return e.is_active === true
+            }).map((e) => {
+                return {
+                    id: e.id,
+                    name: e.name,
+                    email: e.email,
+                    role: e.role,
+                    active: "Yes"
+                }
+            })
+if(activeEmployees.length<1){
+    return res.status(404).json({
+        message:"NO Active user found "
+    })
+}
+            return res.status(200).json({
+                activeEmployees
+            })
+        }
+        else {
+
+
+
+            const inactiveEmployees = employees.rows.filter((e) => {
+                return e.is_active === false
+            }).map((e) => {
+                return {
+                    id: e.id,
+                    name: e.name,
+                    email: e.email,
+                    role: e.role,
+                    active: "No"
+                }
+            })
+            if (inactiveEmployees.length < 1) {
+                return res.status(404).json({
+                    message: "NO InActive user found "
+                })
+            }
+            return res.status(200).json({
+                inactiveEmployees
+            })
+        }
+
+    } catch (error) {
+        next(error)
+    }
 }

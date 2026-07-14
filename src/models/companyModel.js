@@ -78,3 +78,12 @@ exports.getAllEmployeesthroughSearch=async(company_id,name)=>{
         throw error
     }
 }
+
+exports.getAllEmployees=async(company_id)=>{
+    try {
+        const employees=await pool.query('select id,name,email,role,is_active from employees where company_id =$1 ',[company_id]);
+        return employees
+    } catch (error) {
+     throw error   
+    }
+}

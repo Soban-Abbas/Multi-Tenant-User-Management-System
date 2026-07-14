@@ -9,5 +9,6 @@ const { isCompanyEmployees } = require("../helpers/isCompanyEmployees");
 router.post('/register', companyFormValidation,companyController.registerCompany)
 router.post('/login',validateEmaiandPassword,companyController.loginCompany)
 router.get('/employees', verifyToken, IsCompany, companyController.getEmployeesthrowSearch)
+router.get("/employees/filter",verifyToken,IsCompany,companyController.filterEmployees)
 router.put('/recoverAccount',verifyToken,IsCompany,validateEmaiandPassword,companyController.recoverEmployeeAccount)
 module.exports=router
