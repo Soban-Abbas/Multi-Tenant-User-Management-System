@@ -5,7 +5,6 @@ exports.validateEmaiandPassword=(req,res,next)=>{
                 error:"Wrong email or password"
             })
         }else{
-        
-next()
+        next()
         }
 }

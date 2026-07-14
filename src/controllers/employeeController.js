@@ -18,3 +18,15 @@ exports.registerEmployee = async (req, res, next) => {
         next(error)
     }
 }
+exports.login=async(req , res , next)=>{
+    try {
+        
+        const {email,password}=req.body;
+        const details= await EmployeeModel.checklogin(email,password)
+     return   res.status(200).json({
+          ...details
+        })
+    } catch (error) {
+        next(error)
+    }
+}

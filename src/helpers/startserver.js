@@ -6,7 +6,7 @@ try {
     await createTables();
    // await alterCompaniesTable();
     app.listen(3000,()=>{
-        console.log("server is successfully started ")
+        console.log("server is successfully started  on port 3000")
     })
 } catch (error) {
     console.log(error)

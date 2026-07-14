@@ -1,6 +1,8 @@
 const { pool } = require("../database/pool");
 const companiesModel=require("./companyModel")
 const bcrypt = require("bcrypt")
+const jwt=require("jsonwebtoken")
+const { generateToken }=require("../util/generateJWT")
 exports.regNewEmployee = async (name, email, password, company_code,role) => {
     try {
 
@@ -14,7 +16,6 @@ exports.regNewEmployee = async (name, email, password, company_code,role) => {
            
             const hashPassword = await bcrypt.hash(password, 10)
             const newEmployee = await pool.query('insert into employees (name , email, password, company, company_id, role ) values ($1,$2,$3,$4,$5,$6) returning *',[name,email,hashPassword, companyExist.rows[0].name,companyExist.rows[0].id,role]);
-            console.log("helo")
             if(newEmployee.rowCount<1){
     
                 const error= new Error("Email already registed")
@@ -50,3 +51,43 @@ exports.getcompanyByCompanyCode = async (company_code) => {
         throw error
     }
 }
+
+
+exports.getEmployeeByEmail=async(email)=>{
+    try {
+        const employee=await pool.query(`select * from employees where email = $1 `,[email])
+        if(employee.rowCount>0){
+            return employee.rows[0]
+        }else{
+            const error = new Error("Invalid email or password")
+            error.status=401
+            throw error
+            return
+        }
+    } catch (error) {
+        throw error
+    }
+}
+
+exports.checklogin=async(email,password)=>{
+    try {
+        const employee=await this.getEmployeeByEmail(email);
+        const correctPassword=await bcrypt.compare(password,employee.password);
+        if(!correctPassword){
+            const error = new Error("Wrong Email or password");
+            error.status=401;
+            throw error
+            return
+        }else{
+const token = generateToken(employee.id,employee.email,employee.role)
+const {password,department,is_active,company_id,...employeeDetails}=employee
+return{
+...employeeDetails,
+token
+}
+        }
+    } catch (error) {
+        throw error
+    }
+}
+
