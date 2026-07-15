@@ -87,3 +87,12 @@ exports.getAllEmployees=async(company_id,limit , offset)=>{
      throw error   
     }
 }
+
+exports.filterEmployees=async(company_id,is_active,limit , offset)=>{
+try {
+    const activeEmployees=await pool.query(`select id,name,email,role,is_active from employees where company_id =$1 AND is_active = $2 limit $3 offset $4`,[company_id,is_active,limit,offset])
+    return activeEmployees
+} catch (error) {
+    throw error
+}
+}

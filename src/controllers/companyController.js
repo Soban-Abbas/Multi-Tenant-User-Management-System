@@ -111,65 +111,42 @@ exports.recoverEmployeeAccount = async (req, res, next) => {
 }
 
 exports.filterEmployees = async (req, res, next) => {
-
-    try {
-
-        const filter = req.query.active || true;
-        const employees = await companyModel.getAllEmployees(req.details.id)
-        if (employees.rowCount < 1) {
-            return res.status(404).json({
-                message: "No employees found"
-            })
-        }
-        if (filter === "true") {
-            const activeEmployees = employees.rows.filter((e) => {
-                return e.is_active === true
-            }).map((e) => {
-                return {
-                    id: e.id,
-                    name: e.name,
-                    email: e.email,
-                    role: e.role,
-                    active: "Yes"
-                }
-            })
-if(activeEmployees.length<1){
+try {
+    let active = req.query.active || true;
+    let {page,limit}=req.query
+    page=Number(page);
+    limit=Number(limit)
+const offset=(page-1)*limit;
+    if (active === true || active === "true" ) {
+const activeEmployees=await companyModel.filterEmployees(req.details.id,true,limit,offset)
+if(activeEmployees.rowCount<1){
     return res.status(404).json({
-        message:"NO Active user found "
+        error:"NO  Employee is Active "
     })
+}else{
+return res.status(200).json({
+    message:"Active Employees",
+    activeEmployees:activeEmployees.rows
+})
 }
+    }else{
+        const inactiveEmployees=await companyModel.filterEmployees(req.details.id,false,limit,offset);
+        if (inactiveEmployees.rowCount < 1) {
+            return res.status(404).json({
+                error: "NO  Employee is InActive "
+            })
+        } else {
             return res.status(200).json({
-                activeEmployees
+                message: "Active Employees",
+                activeEmployees: inactiveEmployees.rows
             })
         }
-        else {
-
-
-
-            const inactiveEmployees = employees.rows.filter((e) => {
-                return e.is_active === false
-            }).map((e) => {
-                return {
-                    id: e.id,
-                    name: e.name,
-                    email: e.email,
-                    role: e.role,
-                    active: "No"
-                }
-            })
-            if (inactiveEmployees.length < 1) {
-                return res.status(404).json({
-                    message: "NO InActive user found "
-                })
-            }
-            return res.status(200).json({
-                inactiveEmployees
-            })
-        }
-
-    } catch (error) {
-        next(error)
     }
+} catch (error) {
+    next(error)
+}
+   
+
 }
 
 
