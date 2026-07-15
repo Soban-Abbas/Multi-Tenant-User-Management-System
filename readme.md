@@ -467,16 +467,3 @@ except validation errors from `express-validator`, which return:
 | is_active | boolean, default true |
 
 ---
-
-## Known Issues / Things to Clean Up
-
-A few things worth fixing as you keep improving this project:
-
-1. **Inconsistent error messages** — `/company/login` and `/employee/login` can return "Wrong email or password" (from validator) OR a differently-cased "wrong Email or password" (from the model layer). Worth unifying into one message.
-2. **`filterEmployees` response bug** — when `active=false`, the success message still says `"Active Employees"` instead of `"Inactive Employees"`.
-3. **Typo** — `"To login your profile please contact youe company"` → should be *"your"*.
-4. **`is_active` query param default** — `req.query.active || true` means an unset query string always evaluates truthy the first time even before the `=== "true"` check runs; works, but slightly fragile logic worth double-checking with edge cases like `active=false` as a literal string vs boolean.
-5. **`altertable.js`** — not awaited (`pool.query(...)` without `await`) and currently commented out in `startserver.js`. Fine for now since `company_code` is already part of `tablesCreation.js`'s create statement... actually it isn't in `tablesCreation.js`'s `companies` table definition, only added via `altertable.js`. Worth adding `company_code` directly into `tablesCreation.js` so a fresh DB doesn't miss the column.
-6. No **rate limiting** or **helmet**-style security headers yet — good next addition before any real deployment.
-
-Let me know if you want me to actually go fix any of these in the code, or if you want a **Postman collection** / `.http` file generated alongside this README.
