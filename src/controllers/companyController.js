@@ -171,3 +171,26 @@ if(activeEmployees.length<1){
         next(error)
     }
 }
+
+
+exports.getAllEmployeesPagination=async(req,res,next)=>{
+    try {
+        const {page,limit}=req.query
+        const company_id=req.details.id;
+        const offset=(Number(page)-1)*limit;
+
+        const employees=await companyModel.getAllEmployees(company_id,limit,offset)
+        if(employees.rowCount<1){
+            return res.status(404).json({
+                error:" employee  not found"
+            })
+        }else{
+            res.status(200).json({
+                message:"Employees fetch successfully",
+               employees: employees.rows
+            })
+        }
+    } catch (error) {
+        next(error)
+    }
+}

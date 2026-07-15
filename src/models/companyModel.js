@@ -1,4 +1,4 @@
-const { emit } = require("cluster");
+const { emit, off } = require("cluster");
 const employeeModel = require("./employeeModel")
 const { pool } = require("../database/pool")
 const crypto = require("crypto");
@@ -72,16 +72,16 @@ exports.recoverEmployeeAccount = async (company_id, email, password) => {
 
 exports.getAllEmployeesthroughSearch=async(company_id,name)=>{
     try {
-        const employees=await pool.query(`select id,name,email,role from employees where company_id=$1 AND name ilike '%'|| $2 || '%' `,[company_id,name])
+        const employees=await pool.query(`select id,name,email,role from employees where company_id=$1 AND name ilike '%'|| $2 || '%'  limit 3`,[company_id,name])
         return employees
     } catch (error) {
         throw error
     }
 }
 
-exports.getAllEmployees=async(company_id)=>{
+exports.getAllEmployees=async(company_id,limit , offset)=>{
     try {
-        const employees=await pool.query('select id,name,email,role,is_active from employees where company_id =$1 ',[company_id]);
+        const employees=await pool.query('select id,name,email,role,is_active from employees where company_id =$1 limit $2 offset $3',[company_id,limit,offset]);
         return employees
     } catch (error) {
      throw error   
